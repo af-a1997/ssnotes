@@ -63,12 +63,30 @@ public class Note_Database extends SQLiteOpenHelper {
             ddbb.close();
         }
     }
+
     public List<Note> list_notes(){
         SQLiteDatabase ddbb_ro = getReadableDatabase();
 
         try{
             Cursor crs = ddbb_ro.rawQuery("SELECT * FROM notes;",null);
             return return_list(crs);
+        }
+        finally{
+            ddbb_ro.close();
+        }
+    }
+
+    @SuppressLint("Range")
+    public String get_note_contents(String p_idno){
+        SQLiteDatabase ddbb_ro = getReadableDatabase();
+
+        try{
+            Cursor crs = ddbb_ro.rawQuery("SELECT * FROM notes WHERE idno=" + p_idno +";",null);
+
+            if(crs.moveToFirst())
+                return crs.getString(crs.getColumnIndex("contents"));
+
+            return null;
         }
         finally{
             ddbb_ro.close();

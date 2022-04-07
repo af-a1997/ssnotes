@@ -17,7 +17,7 @@
         android:id="@+id/note_editor"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:inputType="text"
+        android:inputType="textMultiLine"
         android:hint="Write your note here"
         android:fontFamily="monospace"
         android:textSize="18sp"
