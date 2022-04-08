@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -86,6 +88,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         String api_url = "https://worldtimeapi.org/api/timezone/America/Montevideo";
         GetCurrentTime gct = new GetCurrentTime();
         gct.execute(api_url);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.toolbar_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem selected_item){
+        if(selected_item.getItemId() == R.id.tb_new_note){
+            Intent goto_activity = new Intent(getApplicationContext(),EditNote.class);
+
+            goto_activity.putExtra("note2edit",-1);
+
+            startActivity(goto_activity);
+
+            return true;
+        }
+        else if(selected_item.getItemId() == R.id.tb_del_all){
+            Toast.makeText(getApplicationContext(),"Feature not implemented yet.",Toast.LENGTH_LONG).show();
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(selected_item);
     }
 
     @Override
