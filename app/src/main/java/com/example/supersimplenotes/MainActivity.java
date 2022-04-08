@@ -55,12 +55,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         String[] nli_arr = new String[notes_list_import.size()];
 
+        // Gets the first letters from stored notes to show as preview, if the note is longer than 20 characters, cut it off at that and add three dots to note there's more content in the note.
         for(int r = 0; r < notes_list_import.size(); r++){
-            nli_arr[r] = notes_list_import.get(r).getContents().substring(0,5) + " ...";
+            if(notes_list_import.get(r).getContents().length() >20)
+               nli_arr[r] = notes_list_import.get(r).getContents().substring(0,20) + " ...";
+
+            else nli_arr[r] = notes_list_import.get(r).getContents();
         }
 
         final ArrayAdapter<String> aa = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,nli_arr);
 
+        // Sets an event to do when clicking an item on the list to view the contents of the note.
         lv_note_listing.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -78,8 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lv_note_listing.setAdapter(aa);
 
         // API details: http://worldtimeapi.org/
-        String api_url = "http://worldtimeapi.org/api/timezone/America/Montevideo";
-
+        String api_url = "https://worldtimeapi.org/api/timezone/America/Montevideo";
         GetCurrentTime gct = new GetCurrentTime();
         gct.execute(api_url);
     }
@@ -88,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         if(view.getId()==R.id.btn_new_note){
             Intent i = new Intent(this,EditNote.class);
+
+            i.putExtra("note2edit",-1);
 
             startActivity(i);
         }
@@ -126,16 +132,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(String s) {
             try {
-                JSONObject json_out_timeinfo = new JSONObject().getJSONObject(s);
+                // Having one heck of a rough time trying to figure out how to properly format data, I've decided I'll just retrieve the [datetime] value from the API response and chop out any other bit of info using substring() and two auxiliary variables. Also, self-reminder to always add the internet connection permission to the manifest each time I want to consume a Web Service...
 
-                String str_datetime = json_out_timeinfo.getString("datetime");
-                // LocalDateTime formatted_dt = LocalDateTime.parse(str_datetime, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-                //str_datetime.substring(10,11).trim();
-                //str_datetime.substring(19).replace(str_datetime.substring(19),"");
-                // Date formatted_dt = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").parse(str_datetime);
+                JSONObject json_out_timeinfo = new JSONObject(s);
+                String str_datetime = json_out_timeinfo.getString("datetime").trim();
 
-                //tv_curr_datetime.setText(formatted_dt.toString());
-                Toast.makeText(getApplicationContext(),str_datetime,Toast.LENGTH_LONG);
+                String str_date, str_time = "";
+                str_date = str_datetime.substring(0,10);
+                str_time = str_datetime.substring(11,19);
+                str_datetime = "The time is: " + str_date + " " + str_time;
+
+                System.out.println(str_datetime);
+
+                tv_curr_datetime.setText(str_datetime);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

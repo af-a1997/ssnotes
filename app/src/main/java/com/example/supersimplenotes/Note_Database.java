@@ -93,6 +93,19 @@ public class Note_Database extends SQLiteOpenHelper {
         }
     }
 
+    // TODO: fix update note feature.
+    @SuppressLint("Range")
+    public void update_note(String p_idno, String p_newcont){
+        SQLiteDatabase ddbb_ro = getReadableDatabase();
+
+        try{
+            ddbb_ro.rawQuery("UPDATE notes SET contents=" + p_newcont +" WHERE idno=" + p_idno +";",null);
+        }
+        finally{
+            ddbb_ro.close();
+        }
+    }
+
     @SuppressLint("range")
     public List<Note> return_list(Cursor i_crs){
         List<Note> notes_listing = new ArrayList<Note>();

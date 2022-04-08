@@ -11,6 +11,7 @@ import android.widget.Toast;
 public class EditNote extends AppCompatActivity {
     private Button btn_save;
     private EditText et_note_compose;
+    private int id_note = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,11 @@ public class EditNote extends AppCompatActivity {
 
         Note_Database ndb = new Note_Database(this);
 
+        // If the user came from a ViewNote activity while viewing a note, fetch its ID and fill the text area with the contents of the note.
+        id_note = getIntent().getIntExtra("note2edit",0);
+        if(id_note != -1)
+            et_note_compose.setText(ndb.get_note_contents(String.valueOf(id_note)));
+
         btn_save.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -29,7 +35,11 @@ public class EditNote extends AppCompatActivity {
 
                 n.setContents(et_note_compose.getText().toString());
 
-                ndb.register_data(n);
+                // Checks if the note is a new one or if the user is editing an existing one.
+                // TODO: fix update feature since app crashes.
+                if(id_note == -1)
+                    ndb.register_data(n);
+                else ndb.update_note(String.valueOf(id_note), String.valueOf(n));
 
                 Toast.makeText(getApplicationContext(),"Saved note",Toast.LENGTH_LONG).show();
 

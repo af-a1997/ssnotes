@@ -22,9 +22,9 @@
             />
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Saving the note only stores it, to go back or edit an existing note, go back to the list of notes."
-            android:textColor="@color/gold"
+            android:layout_height="wrap_content"
+            android:text="Click [Save] to store the note locally."
+            android:textColor="@color/dk_blue"
             android:textStyle="bold"
             android:textSize="16sp"
             android:layout_marginLeft="5dp"

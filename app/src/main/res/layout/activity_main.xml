@@ -42,9 +42,10 @@
     <TextView
         android:id="@+id/wsapi_datetime"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
-        android:fontFamily="monospace"
+        android:layout_height="40dp"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif-condensed"
         android:textColor="@color/dk_orange"
-        android:textStyle="bold"
-        android:gravity="center" />
+        android:gravity="center"
+        />
 </LinearLayout>
